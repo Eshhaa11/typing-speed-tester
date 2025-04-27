@@ -4,7 +4,7 @@ function Notes() {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("");
 
-  // Load notes from Local Storage on start
+  
   useEffect(() => {
     const savedNotes = JSON.parse(localStorage.getItem("notes"));
     if (savedNotes) {

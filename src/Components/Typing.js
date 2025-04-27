@@ -1,63 +1,84 @@
-import React, { useState, useEffect } from "react";
-
-const sampleText = "Use Your Time Wisely.";
+import React, { useState, useEffect, useRef } from "react";
+import "./Typing.css";
 
 function Typing() {
-  const [text] = useState(sampleText);
-  const [input, setInput] = useState("");
-  const [timeLeft, setTimeLeft] = useState(30);
-  const [isRunning, setIsRunning] = useState(false);
-  const [wpm, setWpm] = useState(0);
+  const STARTING_TIME = 20; 
 
+  const [text, setText] = useState("");
+  const [timeRemaining, setTimeRemaining] = useState(STARTING_TIME);
+  const [isTimeRunning, setIsTimeRunning] = useState(false);
+  const [wordCount, setWordCount] = useState(0);
+  const [wpm, setWpm] = useState(0);
+  const textBoxRef = useRef(null);
+
+ 
+  function handleChange(e) {
+    setText(e.target.value);
+  }
+
+
+  function calculateWordCount(text) {
+    const wordsArray = text.trim().split(" ").filter(word => word !== "");
+    return wordsArray.length;
+  }
+
+  
+  function startGame() {
+    setIsTimeRunning(true);
+    setTimeRemaining(STARTING_TIME);
+    setText("");
+    setWordCount(0);
+    setWpm(0);
+    textBoxRef.current.disabled = false;
+    textBoxRef.current.focus();
+  }
+
+  
+  function endGame() {
+    setIsTimeRunning(false);
+    setWordCount(calculateWordCount(text));
+    calculateWPM();
+  }
+
+  // Calculate WPM
+  function calculateWPM() {
+    const wordsTyped = calculateWordCount(text);
+    const wpm = (wordsTyped / (STARTING_TIME - timeRemaining)) * 60;
+    setWpm(Math.round(wpm));
+  }
+
+  
   useEffect(() => {
-    if (isRunning && timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(prev => prev - 1), 1000);
-      return () => clearTimeout(timer);
-    } else if (timeLeft === 0) {
+    if (isTimeRunning && timeRemaining > 0) {
+      setTimeout(() => {
+        setTimeRemaining(prevTime => prevTime - 1);
+      }, 1000);
+    } else if (timeRemaining === 0) {
       endGame();
     }
-  }, [isRunning, timeLeft]);
-
-  const startGame = () => {
-    setIsRunning(true);
-    setInput("");
-    setTimeLeft(30);
-    setWpm(0);
-  };
-
-  const endGame = () => {
-    setIsRunning(false);
-    const wordCount = input.trim().split(/\s+/).length;
-    setWpm(wordCount * 2); 
-  };
-
-  const handleInputChange = (e) => {
-    if (!isRunning) return;
-    setInput(e.target.value);
-  };
+  }, [timeRemaining, isTimeRunning]);
 
   return (
-    <div className="test-container">
+    <div className="typing-speed">
       <h1>Typing Speed Test</h1>
 
-      <div className="text-display">{text}</div>
-
       <textarea
-        className="text-area"
-        value={input}
-        onChange={handleInputChange}
+        ref={textBoxRef}
+        value={text}
+        onChange={handleChange}
+        disabled={!isTimeRunning}
         placeholder="Start typing here..."
-        disabled={!isRunning || timeLeft === 0}
       />
 
-      <div className="info">
-        <p>Time Left: {timeLeft}s</p>
-        <p>WPM: {wpm}</p>
-      </div>
+      <h4>Time Remaining: {timeRemaining} seconds</h4>
+      <button onClick={startGame}>Start</button>
 
-      <button onClick={startGame} className="start-button">
-        {isRunning ? "Running..." : "Start"}
-      </button>
+      {isTimeRunning === false && timeRemaining === 0 && (
+        <div>
+          <h1>WPM: {wpm}</h1>
+          <h4>Words Typed: {wordCount}</h4>
+        </div>
+      )}
     </div>
   );
 }

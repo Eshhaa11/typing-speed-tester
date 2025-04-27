@@ -28,7 +28,7 @@ function Typing() {
   const endGame = () => {
     setIsRunning(false);
     const wordCount = input.trim().split(/\s+/).length;
-    setWpm(wordCount * 2); // because it's a 30 sec timer
+    setWpm(wordCount * 2); 
   };
 
   const handleInputChange = (e) => {
@@ -62,4 +62,4 @@ function Typing() {
   );
 }
 
-export default TypingTest;
+export default Typing;

@@ -1,9 +1,10 @@
-import react from "react";
+
+import Typing from "./Components/Typing";
 
 function App() {
   return (
     <div>
-
+      < Typing />
     </div>
   );
 }

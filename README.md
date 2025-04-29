@@ -24,11 +24,11 @@ To see it in action, clone the repository and follow the setup instructions belo
 1. *Clone the repository:*
 
    ```bash
-   git clone https://github.com/Eshhaa11/drag-drop-task-board
+   git clone https://github.com/Eshhaa11/typing-speed-tester
 
 2. *Navigate to the project directory:*
 
-   cd drag-drop-task-board
+   cd typing-speed-tester
 
 3. *Install dependencies:*
 

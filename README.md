@@ -1,3 +1,5 @@
+![App Screenshot](src/assets/Typing.jpg)
+
 # ⌨️ Typing Speed Test
 
 A sleek and engaging **React app** to test your typing speed. See how fast (and accurately) you can type within a time limit. Includes real-time countdown and WPM (Words Per Minute) calculation.
